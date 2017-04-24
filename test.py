@@ -1,16 +1,28 @@
-from ubidots import ApiClient
+import os
+import re
+import time
 
-api = ApiClient(token='9DKg2IZOfbshkldF62l0SNvghxbCls')
+import variables
 
-temp = api.get_variable('58fdc0357625420d815053e1')
+
+def get_battery_info(name):
+    output = os.popen("ioreg -rn AppleSmartBattery | grep {}".format(name)).read().strip()
+    return re.fullmatch('\"{}\" = (.*)'.format(name), output).group(1)
+
+
+def get_temperature():
+    return float(get_battery_info("Temperature"))
+
+
+def get_is_charging():
+    return get_battery_info("IsCharging") == "Yes"
 
 
 while True:
-    print("temp:", end=" ")
-    t = input()
-    if t == 'q':
-        break
-    try:
-        temp.save_value({'value': int(t)})
-    except ValueError:
-        print("invalid temp")
+    temp = get_temperature()
+    is_charging = get_is_charging()
+    print("temp: {}, is charging: {}".format(temp, is_charging))
+    variables.temp.save_value({'value': temp})
+    variables.is_charging.save_value({'value': is_charging})
+
+    time.sleep(5)
