@@ -5,17 +5,17 @@ import time
 import variables
 
 
-def get_battery_info(name):
-    output = os.popen("ioreg -rn AppleSmartBattery | grep {}".format(name)).read().strip()
-    return re.fullmatch('\"{}\" = (.*)'.format(name), output).group(1)
-
-
 def get_temperature():
-    return float(get_battery_info("Temperature"))
+    temp = os.popen("cat /sys/class/hwmon/hwmon0/temp1_input").read().strip()
+    return int(temp)
 
 
 def get_is_charging():
-    return get_battery_info("IsCharging") == "Yes"
+    state = os.popen("upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state").read().strip()
+    if "discharging" in state: 
+        return 0 
+    else:
+        return 1
 
 
 while True:
