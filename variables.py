@@ -1,8 +1,11 @@
 from ubidots import ApiClient
-from api_token import api_token
+
+raise Exception("Configuration needed")
+
+api_token = ''
 
 api = ApiClient(token=api_token)
 
-temp = api.get_variable('58fdc0357625420d815053e1')
+temp = api.get_variable('')
 
-is_charging = api.get_variable('58fe6d5d7625424b9c5368f0')
+is_charging = api.get_variable('')
