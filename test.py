@@ -11,7 +11,7 @@ def get_battery_info(name):
 
 
 def get_temperature():
-    return float(get_battery_info("Temperature"))
+    return float(get_battery_info("Temperature"))/100
 
 
 def get_is_charging():
@@ -25,4 +25,4 @@ while True:
     variables.temp.save_value({'value': temp})
     variables.is_charging.save_value({'value': is_charging})
 
-    time.sleep(5)
+    time.sleep(1)
