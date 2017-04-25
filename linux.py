@@ -7,13 +7,13 @@ import variables
 
 def get_temperature():
     temp = os.popen("cat /sys/class/hwmon/hwmon0/temp1_input").read().strip()
-    return int(temp) // 100
+    return int(temp) // 1000
 
 
 def get_is_charging():
     state = os.popen("upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state").read().strip()
     if "discharging" in state: 
-        return 0 
+        return 0
     else:
         return 1
 
