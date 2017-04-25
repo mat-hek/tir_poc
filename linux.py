@@ -7,7 +7,7 @@ import variables
 
 def get_temperature():
     temp = os.popen("cat /sys/class/hwmon/hwmon0/temp1_input").read().strip()
-    return int(temp)
+    return int(temp) // 100
 
 
 def get_is_charging():
